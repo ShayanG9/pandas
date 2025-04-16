@@ -10754,9 +10754,13 @@ class DataFrame(NDFrame, OpsMixin):
             * right_anti: use set difference of `other`'s index and calling frame's
               index.
         lsuffix : str, default None
-            Suffix to use from left frame's overlapping columns.
+            Suffix to use from left frame's overlapping columns. Pass a value of `None`
+            instead of a string to indicate that the column name from caller should be
+            left as-is, with no suffix.
         rsuffix : str, default None
-            Suffix to use from right frame's overlapping columns.
+            Suffix to use from right frame's overlapping columns. Pass a value of `None`
+            instead of a string to indicate that the column name from other should be
+            left as-is, with no suffix.
         sort : bool, default False
             Order result DataFrame lexicographically by the join key. If False,
             the order of the join key depends on the join type (how keyword).
