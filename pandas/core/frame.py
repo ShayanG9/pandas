@@ -10753,9 +10753,9 @@ class DataFrame(NDFrame, OpsMixin):
               index.
             * right_anti: use set difference of `other`'s index and calling frame's
               index.
-        lsuffix : str, default ''
+        lsuffix : str, default None
             Suffix to use from left frame's overlapping columns.
-        rsuffix : str, default ''
+        rsuffix : str, default None
             Suffix to use from right frame's overlapping columns.
         sort : bool, default False
             Order result DataFrame lexicographically by the join key. If False,
@@ -10879,8 +10879,13 @@ class DataFrame(NDFrame, OpsMixin):
         """
         from pandas.core.reshape.concat import concat
         from pandas.core.reshape.merge import merge
+
         if lsuffix is None or rsuffix is None:
-            warnings.warn("The default values for lsuffix and rsuffix have changed to be None.", DeprecationWarning, find_stack_level())
+            warnings.warn(
+                "The default values for lsuffix and rsuffix have changed to be None.",
+                DeprecationWarning,
+                find_stack_level(),
+            )
 
         if isinstance(other, Series):
             if other.name is None:
