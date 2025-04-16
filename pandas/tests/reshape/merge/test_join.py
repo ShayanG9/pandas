@@ -124,10 +124,7 @@ class TestJoin:
     @pytest.mark.parametrize(
         "infer_string", [False, pytest.param(True, marks=td.skip_if_no("pyarrow"))]
     )
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_on(self, target_source, infer_string):
         target, source = target_source
 
@@ -236,10 +233,7 @@ class TestJoin:
         with pytest.raises(TypeError, match=msg):
             merge(df, wrong_type, left_on="a", right_on="a")
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_on_pass_vector(self, target_source):
         target, source = target_source
         expected = target.join(source, on="C")
@@ -250,10 +244,7 @@ class TestJoin:
         result = target.join(source, on=join_col)
         tm.assert_frame_equal(result, expected)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_with_len0(self, target_source):
         # nothing to merge
         target, source = target_source
@@ -266,10 +257,7 @@ class TestJoin:
         tm.assert_index_equal(merged2.columns, merged.columns)
         assert len(merged2) == 0
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_on_inner(self):
         df = DataFrame({"key": ["a", "a", "d", "b", "b", "c"]})
         df2 = DataFrame({"value": [0, 1]}, index=["a", "b"])
@@ -282,10 +270,7 @@ class TestJoin:
         tm.assert_series_equal(joined["value"], expected["value"], check_dtype=False)
         tm.assert_index_equal(joined.index, expected.index)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_on_singlekey_list(self):
         df = DataFrame({"key": ["a", "a", "b", "b", "c"]})
         df2 = DataFrame({"value": [0, 1, 2]}, index=["a", "b", "c"])
@@ -296,20 +281,14 @@ class TestJoin:
 
         tm.assert_frame_equal(joined, expected)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_on_series(self, target_source):
         target, source = target_source
         result = target.join(source["MergedA"], on="C")
         expected = target.join(source[["MergedA"]], on="C")
         tm.assert_frame_equal(result, expected)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_on_series_buglet(self):
         # GH #638
         df = DataFrame({"a": [1, 1]})
@@ -318,10 +297,7 @@ class TestJoin:
         expected = DataFrame({"a": [1, 1], "b": [2, 2]}, index=df.index)
         tm.assert_frame_equal(result, expected)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_index_mixed(self, join_type):
         # no overlapping blocks
         df1 = DataFrame(index=np.arange(10))
@@ -372,19 +348,13 @@ class TestJoin:
         expected = _join_by_hand(df1, df2)
         tm.assert_frame_equal(joined, expected)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_empty_bug(self):
         # generated an exception in 0.4.3
         x = DataFrame()
         x.join(DataFrame([3], index=[0], columns=["A"]), how="outer")
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_unconsolidated(self):
         # GH #331
         a = DataFrame(
@@ -398,10 +368,7 @@ class TestJoin:
         a.join(d)
         d.join(a)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_multiindex(self):
         index1 = MultiIndex.from_arrays(
             [["a", "a", "a", "b", "b", "b"], [1, 2, 3, 1, 2, 3]],
@@ -445,10 +412,7 @@ class TestJoin:
         tm.assert_frame_equal(joined, expected)
         assert joined.index.names == index1.names
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_inner_multiindex(self, lexsorted_two_level_string_multiindex):
         key1 = ["bar", "bar", "bar", "foo", "foo", "baz", "baz", "qux", "qux", "snap"]
         key2 = [
@@ -524,10 +488,7 @@ class TestJoin:
         ):
             merge(new_df, other_df, left_index=True, right_index=True)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_float64_float32(self):
         a = DataFrame(
             np.random.default_rng(2).standard_normal((10, 2)),
@@ -561,10 +522,7 @@ class TestJoin:
         xp = xpdf.merge(s, left_on="a", right_index=True)
         tm.assert_frame_equal(rs, xp)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_many_non_unique_index(self):
         df1 = DataFrame({"a": [1, 1], "b": [1, 1], "c": [10, 20]})
         df2 = DataFrame({"a": [1, 1], "b": [1, 2], "d": [100, 200]})
@@ -622,6 +580,7 @@ class TestJoin:
     @pytest.mark.parametrize(
         "infer_string", [False, pytest.param(True, marks=td.skip_if_no("pyarrow"))]
     )
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_sort(self, infer_string):
         with option_context("future.infer_string", infer_string):
             left = DataFrame(
@@ -644,6 +603,7 @@ class TestJoin:
             joined = left.join(right, on="key", sort=False)
             tm.assert_index_equal(joined.index, Index(range(4)), exact=True)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_mixed_non_unique_index(self):
         # GH 12814, unorderable types in py3 with a non-unique index
         df1 = DataFrame({"a": [1, 2, 3, 4]}, index=[1, 2, 3, "a"])
@@ -663,6 +623,7 @@ class TestJoin:
         )
         tm.assert_frame_equal(result, expected)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_non_unique_period_index(self):
         # GH #16871
         index = pd.period_range("2016-01-01", periods=16, freq="M")
@@ -676,6 +637,7 @@ class TestJoin:
         )
         tm.assert_frame_equal(result, expected)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_mixed_type_join_with_suffix(self, using_infer_string):
         # GH #916
         df = DataFrame(
@@ -697,6 +659,7 @@ class TestJoin:
         # it works!
         mn.join(cn, rsuffix="_right")
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_many(self):
         df = DataFrame(
             np.random.default_rng(2).standard_normal((10, 6)), columns=list("abcdef")
@@ -727,6 +690,7 @@ class TestJoin:
         with pytest.raises(ValueError, match=msg):
             df_list[0].join(df_list[1:], on="a")
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_many_mixed(self):
         df = DataFrame(
             np.random.default_rng(2).standard_normal((8, 4)),
@@ -740,6 +704,7 @@ class TestJoin:
         result = df1.join([df2, df3])
         tm.assert_frame_equal(result, df)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_dups(self):
         # joining dups
         df = concat(
@@ -785,6 +750,7 @@ class TestJoin:
         ):
             dta.merge(w, left_index=True, right_index=True)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_multi_to_multi(self, join_type):
         # GH 20475
         leftindex = MultiIndex.from_product(
@@ -812,6 +778,7 @@ class TestJoin:
         with pytest.raises(ValueError, match=msg):
             right.join(left, on=["abc", "xy"], how=join_type)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_on_tz_aware_datetimeindex(self):
         # GH 23931, 26335
         df1 = DataFrame(
@@ -836,6 +803,7 @@ class TestJoin:
         expected["vals_2"] = Series([np.nan] * 2 + list("tuv"))
         tm.assert_frame_equal(result, expected)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_datetime_string(self):
         # GH 5647
         dfa = DataFrame(
@@ -866,6 +834,7 @@ class TestJoin:
         expected["x"] = expected["x"].astype("M8[ns]")
         tm.assert_frame_equal(result, expected)
 
+    @pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
     def test_join_with_categorical_index(self):
         # GH47812
         ix = ["a", "b"]
@@ -967,6 +936,7 @@ def _join_by_hand(a, b, how="left"):
     return a_re.reindex(columns=result_columns)
 
 
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
 def test_join_inner_multiindex_deterministic_order():
     # GH: 36910
     left = DataFrame(
@@ -987,6 +957,7 @@ def test_join_inner_multiindex_deterministic_order():
 @pytest.mark.parametrize(
     ("input_col", "output_cols"), [("b", ["a", "b"]), ("a", ["a_x", "a_y"])]
 )
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
 def test_join_cross(input_col, output_cols):
     # GH#5401
     left = DataFrame({"a": [1, 3]})
@@ -996,6 +967,7 @@ def test_join_cross(input_col, output_cols):
     tm.assert_frame_equal(result, expected)
 
 
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
 def test_join_multiindex_one_level(join_type):
     # GH#36909
     left = DataFrame(
@@ -1028,6 +1000,7 @@ def test_join_multiindex_one_level(join_type):
         ),
     ],
 )
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
 def test_join_multiindex_not_alphabetical_categorical(categories, values):
     # GH#38502
     left = DataFrame(
@@ -1072,6 +1045,7 @@ def test_join_multiindex_not_alphabetical_categorical(categories, values):
         (True, "cross", "empty"),
     ],
 )
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
 def test_join_empty(left_empty, how, exp):
     left = DataFrame({"A": [2, 1], "B": [3, 4]}, dtype="int64").set_index("A")
     right = DataFrame({"A": [1], "C": [5]}, dtype="int64").set_index("A")
@@ -1127,10 +1101,7 @@ def test_join_empty_uncomparable_columns():
         ("right", [0, 2, 1]),
     ],
 )
-@pytest.mark.filterwarnings(
-    "ignore:The default values for lsuffix and rsuffix have changed to be None."
-    ":DeprecationWarning"
-)
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
 def test_join_multiindex_categorical_output_index_dtype(how, values):
     # GH#50906
     df1 = DataFrame(
@@ -1162,10 +1133,7 @@ def test_join_multiindex_categorical_output_index_dtype(how, values):
     tm.assert_frame_equal(result, expected)
 
 
-@pytest.mark.filterwarnings(
-    "ignore:The default values for lsuffix and rsuffix have changed to be None."
-    ":DeprecationWarning"
-)
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
 def test_join_multiindex_with_none_as_label():
     # GH 58721
     df1 = DataFrame(
@@ -1191,19 +1159,20 @@ def test_join_multiindex_with_none_as_label():
     )
     tm.assert_frame_equal(result21, expected21)
 
-    @pytest.mark.filterwarnings(
-        "ignore:The default values for lsuffix and rsuffix have changed to be None."
-        ":DeprecationWarning"
-    )
-    def test_join_with_integer_columns():
-        df1 = DataFrame({0: [1, 2, 3, 4]})
-        df2 = DataFrame({0: [5, 6, 7, 8]})
 
-        tm.assert_frame_equal(df1.join(df2, on=0, rsuffix="_test")[0], df1)
+@pytest.mark.filterwarnings("default:.*lsuffix and rsuffix.*:DeprecationWarning")
+def test_join_with_integer_columns():
+    df1 = DataFrame(data={0: [1, 2, 3, 4]})
+    df2 = DataFrame(index=[1, 2, 3, 4], data={0: [5, 6, 7, 8]})
 
-    def test_join_suffix_deprectiation():
-        df1 = DataFrame({0: [1, 2, 3, 4]})
-        df2 = DataFrame({0: [5, 6, 7, 8]})
+    expected = DataFrame(data={0: [1, 2, 3, 4], "0_test": [5, 6, 7, 8]})
 
-        with tm.assert_produces_warning(DeprecationWarning):
-            df1.join(df2, on=0, rsuffix="_test")
+    tm.assert_frame_equal(df1.join(df2, on=0, rsuffix="_test"), expected)
+
+
+def test_join_suffix_deprectiation():
+    df1 = DataFrame(data={0: [1, 2, 3, 4]})
+    df2 = DataFrame(data={0: [5, 6, 7, 8]})
+
+    with tm.assert_produces_warning(DeprecationWarning):
+        df1.join(df2, on=0, rsuffix="_test")
