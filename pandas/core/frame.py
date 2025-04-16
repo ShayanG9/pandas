@@ -10712,8 +10712,8 @@ class DataFrame(NDFrame, OpsMixin):
         other: DataFrame | Series | Iterable[DataFrame | Series],
         on: IndexLabel | None = None,
         how: MergeHow = "left",
-        lsuffix: str = "",
-        rsuffix: str = "",
+        lsuffix: str | None = None,
+        rsuffix: str | None = None,
         sort: bool = False,
         validate: JoinValidate | None = None,
     ) -> DataFrame:
@@ -10879,6 +10879,8 @@ class DataFrame(NDFrame, OpsMixin):
         """
         from pandas.core.reshape.concat import concat
         from pandas.core.reshape.merge import merge
+        if lsuffix is None or rsuffix is None:
+            warnings.warn("The default values for lsuffix and rsuffix have changed to be None.", DeprecationWarning, find_stack_level())
 
         if isinstance(other, Series):
             if other.name is None:
